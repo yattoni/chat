@@ -5,7 +5,9 @@
     "chat": "bin/chat.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && npm run compile",
+    "compile": "tsc",
+    "clean": "tsc --build --clean",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk"
