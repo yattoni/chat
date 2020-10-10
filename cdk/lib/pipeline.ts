@@ -29,7 +29,8 @@ export class ChatPipelineStack extends core.Stack {
                 output: sourceArtifact,
                 oauthToken: core.SecretValue.secretsManager('chat-pipeline-github-token'),
                 owner: 'yattoni',
-                repo: 'chat'
+                repo: 'chat',
+                branch: 'main'
             }),
 
             synthAction: pipelines.SimpleSynthAction.standardNpmSynth({
