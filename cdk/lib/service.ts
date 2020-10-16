@@ -1,15 +1,9 @@
 import * as core from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
 import * as lambda from '@aws-cdk/aws-lambda';
 
-export class ChatStack extends core.Stack {
+export class Service extends core.Stack {
   constructor(scope: core.Construct, id: string, props?: core.StackProps) {
     super(scope, id, props);
-
-    // The code that defines your stack goes here
-    new s3.Bucket(this, 'Bucket', {
-      removalPolicy: core.RemovalPolicy.DESTROY,
-    });
 
     new lambda.Function(this, 'Lambda', {
       code: lambda.Code.fromAsset('../lambda', {

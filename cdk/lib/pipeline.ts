@@ -2,13 +2,13 @@ import * as core from '@aws-cdk/core';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import * as pipelines from '@aws-cdk/pipelines';
-import { ChatStack } from './chat-stack';
+import { Service } from './service';
 
 class ChatApplication extends core.Stage {
   constructor(scope: core.Construct, id: string, props?: core.StageProps) {
     super(scope, id, props);
 
-    const chat = new ChatStack(this, 'Chat');
+    const chat = new Service(this, 'Service');
   }
 }
 
