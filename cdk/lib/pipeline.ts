@@ -8,7 +8,9 @@ class ChatApplication extends core.Stage {
   constructor(scope: core.Construct, id: string, props?: core.StageProps) {
     super(scope, id, props);
 
-    const chat = new Service(this, 'Service');
+    const chat = new Service(this, 'Service', {
+      apiName: 'chat-api',
+    });
   }
 }
 
