@@ -16,7 +16,7 @@
     "deploy-dev": "cdk -a cdk.out/assembly-Dev/ deploy"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.68.0",
+    "@aws-cdk/assert": "1.69.0",
     "@types/jest": "^26.0.10",
     "@types/node": "14.14.2",
     "aws-cdk": "1.69.0",
