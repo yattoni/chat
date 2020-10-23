@@ -1,7 +1,7 @@
-import * as core from '@aws-cdk/core';
-import * as apig from '@aws-cdk/aws-apigatewayv2';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
+import * as core from 'monocdk';
+import * as apig from 'monocdk/aws-apigatewayv2';
+import * as lambda from 'monocdk/aws-lambda';
+import * as iam from 'monocdk/aws-iam';
 
 export interface ServiceProps extends core.StackProps {
   apiName: string;
