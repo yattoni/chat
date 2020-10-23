@@ -1,9 +1,11 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestHandleRequest(t *testing.T) {
-	actual, _ := HandleRequest()
+	actual, _ := handleRequest()
 	if actual.StatusCode != 200 {
 		t.Errorf("HandleRequest() StatusCode = %d; wanted 200", actual.StatusCode)
 	}

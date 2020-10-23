@@ -12,27 +12,15 @@ export class Service extends core.Stack {
   constructor(scope: core.Construct, id: string, props: ServiceProps) {
     super(scope, id, props);
 
-    // const connectLambdaRole = new iam.Role(this, 'ConnectLambdaRole', {
-    //   assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-    // });
-    // connectLambdaRole.addManagedPolicy(
-    //   iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')
-    // );
-
     const handler = new lambda.Function(this, 'Lambda', {
       code: lambda.Code.fromAsset('../lambda', {
         bundling: {
           image: lambda.Runtime.GO_1_X.bundlingDockerImage,
-          command: [
-            'sh',
-            '-c',
-            'export GOBIN=$(go env GOPATH)/bin && go get -t ./... && go test . && go build -o /asset-output/main',
-          ],
+          command: ['sh', '-c', 'go test && go build -o /asset-output/main'],
         },
       }),
       handler: 'main',
       runtime: lambda.Runtime.GO_1_X,
-      // role: connectLambdaRole,
     });
 
     const api = new apig.CfnApi(this, 'Api', {
