@@ -2,7 +2,6 @@ import * as core from '@aws-cdk/core';
 import * as apig from '@aws-cdk/aws-apigatewayv2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
-import { Arn } from '@aws-cdk/core';
 
 export interface ServiceProps extends core.StackProps {
   apiName: string;
@@ -59,7 +58,7 @@ export class Service extends core.Stack {
     const connectIntegration = new apig.CfnIntegration(this, 'ConnectIntegration', {
       apiId: api.ref,
       integrationType: 'AWS_PROXY',
-      integrationUri: this.create_integration_str(this.region, handler.functionArn),
+      integrationUri: this.createLambdaIntegrationStr(handler),
       credentialsArn: apigExecutionRole.roleArn,
     });
 
@@ -86,6 +85,12 @@ export class Service extends core.Stack {
     deployment.node.addDependency(deploymentDependencies);
   }
 
-  private create_integration_str = (region: string, fn_arn: string): string =>
-    `arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${fn_arn}/invocations`;
+  private createLambdaIntegrationStr = (func: lambda.IFunction): string =>
+    this.formatArn({
+      service: 'apigateway',
+      account: 'lambda',
+      resource: 'path/2015-03-31/functions',
+      sep: '/',
+      resourceName: `${func.functionArn}/invocations`,
+    });
 }
