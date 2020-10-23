@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as core from 'monocdk';
-import { ChatPipelineStack } from '../lib/pipeline';
+import { ChatPipelineStack, ChatApplication } from '../lib/pipeline';
 
 const app = new core.App();
 new ChatPipelineStack(app, 'ChatPipeline', {
@@ -9,4 +9,12 @@ new ChatPipelineStack(app, 'ChatPipeline', {
     account: '092828786384',
     region: 'us-east-2',
   },
+});
+
+new ChatApplication(app, 'Dev', {
+  env: {
+    account: '092828786384',
+    region: 'us-east-2',
+  },
+  apiName: 'dev-chat-api',
 });

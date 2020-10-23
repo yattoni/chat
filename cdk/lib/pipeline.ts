@@ -4,12 +4,16 @@ import * as codepipeline_actions from 'monocdk/aws-codepipeline-actions';
 import * as pipelines from 'monocdk/pipelines';
 import { Service } from './service';
 
-class ChatApplication extends core.Stage {
-  constructor(scope: core.Construct, id: string, props?: core.StageProps) {
+export interface ChatApplicationProps extends core.StageProps {
+  apiName: string;
+}
+
+export class ChatApplication extends core.Stage {
+  constructor(scope: core.Construct, id: string, props: ChatApplicationProps) {
     super(scope, id, props);
 
     const chat = new Service(this, 'Service', {
-      apiName: 'chat-api',
+      apiName: props.apiName,
     });
   }
 }
@@ -50,6 +54,7 @@ export class ChatPipelineStack extends core.Stack {
         account: props?.env?.account,
         region: props?.env?.region,
       },
+      apiName: 'chat-api',
     });
 
     pipeline.addApplicationStage(chatApp);
