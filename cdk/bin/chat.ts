@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
-import * as core from '@aws-cdk/core';
+import * as core from 'monocdk';
 import { ChatPipelineStack } from '../lib/pipeline';
 
 const app = new core.App();

@@ -1,7 +1,7 @@
-import * as core from '@aws-cdk/core';
-import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import * as pipelines from '@aws-cdk/pipelines';
+import * as core from 'monocdk';
+import * as codepipeline from 'monocdk/aws-codepipeline';
+import * as codepipeline_actions from 'monocdk/aws-codepipeline-actions';
+import * as pipelines from 'monocdk/pipelines';
 import { Service } from './service';
 
 class ChatApplication extends core.Stage {
