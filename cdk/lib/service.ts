@@ -83,6 +83,11 @@ export class Service extends core.Stack {
     const deploymentDependencies = new core.ConcreteDependable();
     deploymentDependencies.add(connectRoute);
     deployment.node.addDependency(deploymentDependencies);
+
+    new core.CfnOutput(this, 'WebsocketUrl', {
+      exportName: `${this.stackName}-WebSocket-URL`,
+      value: `wss://${api.ref}.execute-api.${this.region}.amazonaws.com/${stage.stageName}`,
+    });
   }
 
   private createLambdaIntegrationStr = (func: lambda.IFunction): string =>
