@@ -12,12 +12,7 @@ export class Service extends core.Stack {
     super(scope, id, props);
 
     const handler = new lambda.Function(this, 'Lambda', {
-      code: lambda.Code.fromAsset('../lambda', {
-        bundling: {
-          image: lambda.Runtime.GO_1_X.bundlingDockerImage,
-          command: ['sh', '-c', 'go test && go build -o /asset-output/main'],
-        },
-      }),
+      code: lambda.Code.fromAsset('../lambda/build'),
       handler: 'main',
       runtime: lambda.Runtime.GO_1_X,
     });
@@ -69,6 +64,20 @@ export class Service extends core.Stack {
       target: 'integrations/' + connectIntegration.ref,
     });
 
+    const disconnectIntegration = new apig.CfnIntegration(this, 'DisconnectIntegration', {
+      apiId: api.ref,
+      integrationType: 'AWS_PROXY',
+      integrationUri: this.createLambdaIntegrationStr(handler),
+      credentialsArn: apigExecutionRole.roleArn,
+    });
+
+    const disconnectRoute = new apig.CfnRoute(this, 'DisconnectRoute', {
+      apiId: api.ref,
+      routeKey: '$disconnect',
+      authorizationType: 'NONE',
+      target: 'integrations/' + disconnectIntegration.ref,
+    });
+
     const deployment = new apig.CfnDeployment(this, 'Deployment', {
       apiId: api.ref,
     });
@@ -82,6 +91,9 @@ export class Service extends core.Stack {
 
     const deploymentDependencies = new core.ConcreteDependable();
     deploymentDependencies.add(connectRoute);
+    deploymentDependencies.add(connectIntegration);
+    deploymentDependencies.add(disconnectRoute);
+    deploymentDependencies.add(disconnectIntegration);
     deployment.node.addDependency(deploymentDependencies);
 
     new core.CfnOutput(this, 'WebsocketUrl', {
