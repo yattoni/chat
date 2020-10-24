@@ -2,14 +2,56 @@ package main
 
 import (
 	"testing"
+
+	"github.com/aws/aws-lambda-go/events"
 )
 
-func TestHandleRequest(t *testing.T) {
-	actual, _ := handleRequest()
+func TestRouteRequest_Connect(t *testing.T) {
+	actual, _ := routeRequest(events.APIGatewayWebsocketProxyRequest{
+		RequestContext: events.APIGatewayWebsocketProxyRequestContext{
+			RouteKey:     "$connect",
+			ConnectionID: "12345",
+		},
+	})
+	expectedStatusCode := 200
 	if actual.StatusCode != 200 {
-		t.Errorf("HandleRequest() StatusCode = %d; wanted 200", actual.StatusCode)
+		t.Errorf("routeRequest() StatusCode = %d; wanted %d", actual.StatusCode, expectedStatusCode)
 	}
-	if actual.Body != "Hello, World!" {
-		t.Errorf("HandleRequest() Body = '%s'; wanted 'Hello, World!'", actual.Body)
+	expectedBody := "Hello, 12345"
+	if actual.Body != expectedBody {
+		t.Errorf("routeRequest() Body = '%s'; wanted '%s'", actual.Body, expectedBody)
+	}
+}
+
+func TestRouteRequest_Disconnect(t *testing.T) {
+	actual, _ := routeRequest(events.APIGatewayWebsocketProxyRequest{
+		RequestContext: events.APIGatewayWebsocketProxyRequestContext{
+			RouteKey:     "$disconnect",
+			ConnectionID: "12345",
+		},
+	})
+	expectedStatusCode := 200
+	if actual.StatusCode != 200 {
+		t.Errorf("routeRequest() StatusCode = %d; wanted %d", actual.StatusCode, expectedStatusCode)
+	}
+	expectedBody := "Goodbye, 12345"
+	if actual.Body != expectedBody {
+		t.Errorf("routeRequest() Body = '%s'; wanted '%s'", actual.Body, expectedBody)
+	}
+}
+
+func TestRouteRequest_BadRoute(t *testing.T) {
+	actual, _ := routeRequest(events.APIGatewayWebsocketProxyRequest{
+		RequestContext: events.APIGatewayWebsocketProxyRequestContext{
+			RouteKey: "bad route",
+		},
+	})
+	expectedStatusCode := 400
+	if actual.StatusCode != 400 {
+		t.Errorf("routeRequest() StatusCode = %d; wanted %d", actual.StatusCode, expectedStatusCode)
+	}
+	expectedBody := "Bad Request"
+	if actual.Body != expectedBody {
+		t.Errorf("routeRequest() Body = '%s'; wanted '%s'", actual.Body, expectedBody)
 	}
 }
