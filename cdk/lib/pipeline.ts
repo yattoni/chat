@@ -45,8 +45,6 @@ export class ChatPipelineStack extends core.Stack {
         installCommand: 'npm install -g aws-cdk && npm install',
         buildCommand: 'npm run build-lambda',
         synthCommand: 'cdk synth',
-        // enables docker bundling https://github.com/aws/aws-cdk/issues/9217
-        environment: { privileged: true },
       }),
     });
 
