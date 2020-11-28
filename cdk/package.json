@@ -12,7 +12,7 @@
     "test": "jest",
     "cdk": "cdk",
     "build-lambda": "cd ../lambda && go test && go build -o build/main && cd ../cdk",
-    "build-website": "cd ../website && npm run build && cd ../cdk",
+    "build-website": "cd ../website && npm install && npm run build && cd ../cdk",
     "diff-prod": "cdk -a cdk.out/assembly-ChatPipeline-Prod/ diff",
     "diff-dev": "cdk -a cdk.out/assembly-Dev/ diff",
     "deploy-dev": "cdk -a cdk.out/assembly-Dev/ deploy"
