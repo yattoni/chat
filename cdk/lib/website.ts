@@ -21,5 +21,10 @@ export class Website extends core.Stack {
       sources: [s3deploy.Source.asset('../website/build')],
       destinationBucket: websiteBucket,
     });
+
+    new core.CfnOutput(this, 'BucketWebsiteUrl', {
+      exportName: `${this.stackName}-Bucket-Website-URL`,
+      value: websiteBucket.bucketWebsiteUrl,
+    });
   }
 }
