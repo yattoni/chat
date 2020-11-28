@@ -3,6 +3,7 @@ import * as codepipeline from 'monocdk/aws-codepipeline';
 import * as codepipeline_actions from 'monocdk/aws-codepipeline-actions';
 import * as pipelines from 'monocdk/pipelines';
 import { Service } from './service';
+import { Website } from './website';
 
 export interface ChatApplicationProps extends core.StageProps {
   apiName: string;
@@ -12,9 +13,11 @@ export class ChatApplication extends core.Stage {
   constructor(scope: core.Construct, id: string, props: ChatApplicationProps) {
     super(scope, id, props);
 
-    const chat = new Service(this, 'Service', {
+    new Service(this, 'Service', {
       apiName: props.apiName,
     });
+
+    new Website(this, 'Website');
   }
 }
 
@@ -43,7 +46,7 @@ export class ChatPipelineStack extends core.Stack {
         cloudAssemblyArtifact,
         subdirectory: 'cdk',
         installCommand: 'npm install -g aws-cdk && npm install',
-        buildCommand: 'npm run build-lambda',
+        buildCommand: 'npm run build-lambda && npm run build-website',
         synthCommand: 'cdk synth',
       }),
     });
